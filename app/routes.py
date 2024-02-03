@@ -1,6 +1,7 @@
 from flask import render_template, flash, redirect, url_for
 from app import app
 from app.forms import LoginForm
+from app.db_service import get_db_connection
 
 @app.route('/')
 @app.route('/index')
@@ -15,3 +16,11 @@ def login():
         flash('Login requested for user {}, remember_me={}'.format(form.username.data, form.remember_me.data))
         return redirect(url_for('index'))
     return render_template('login.html',title='Sign in', form=form)
+
+@app.route('/users')
+def getUsers():
+    conn = get_db_connection()
+    users = conn.execute('Select * from user').fetchall()
+    print(users)
+    conn.close()
+    return None
