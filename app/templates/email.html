@@ -1,0 +1,32 @@
+{% extends "base.html" %} {% block content %}
+<h1>Send Mail</h1>
+<form action="" method="post" novalidate>
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.from_email.label }}<br />
+    {{ form.from_email(size=32) }}{% for error in form.from_email.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.recipients_email.label }}<br />
+    {{ form.recipients_email(size=32) }} {% for error in
+    form.recipients_email.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.subject.label }}<br />
+    {{ form.subject(size=32) }} {% for error in form.subject.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.text_body.label }}<br />
+    {{ form.text_body(size=32) }} {% for error in form.text_body.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>{{ form.submit() }}</p>
+</form>
+{% endblock %}

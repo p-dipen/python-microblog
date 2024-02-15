@@ -1,11 +1,11 @@
 from flask import render_template, flash, redirect, url_for
 from app import app,db
 import sqlalchemy as sa
-from app.forms import LoginForm
+from app.forms import LoginForm, SendForm
 from app.db_service import get_db_connection
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User
-
+from app.emails import send_email
 @app.route('/')
 @app.route('/index')
 @login_required
@@ -40,3 +40,14 @@ def getUsers():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+
+@app.route('/email', methods=['GET','POST'])
+@login_required
+def sendEmail():
+    form = SendForm()
+    if form.validate_on_submit():
+        send_email(form.subject.data, form.from_email.data, [form.recipients_email.data], form.text_body.data, '')
+        flash('Email is send')
+        return redirect(url_for('sendEmail'))
+    return render_template('email.html',title='Sign in', form=form)
